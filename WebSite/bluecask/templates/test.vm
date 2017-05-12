@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<html>
+<head>
+
+<title>Test Template</title>
+
+</head>
+
+<body>
+Made it here.
+  <table>
+  #foreach($row in $CacheRows)
+    <tr>
+      <td>System: $row.System</td>
+      <td>Name: $row.Name</td>
+      <td>Value: $row.Value</td>
+    </tr>
+  #end
+  </table>
+</body>
+</html>
+

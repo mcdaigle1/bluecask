@@ -1,0 +1,32 @@
+/*
+ * Created on Feb 27, 2005
+ *
+ * TODO To change the template for this generated file go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+package com.bcs.dblayer.connection;
+
+/**
+ * @author mdaigle
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+class ConnectionReaper extends Thread {
+
+    private JDBCConnectionPool pool;
+    private final long delay=300000;
+
+    ConnectionReaper(JDBCConnectionPool pool) {
+        this.pool=pool;
+    }
+
+    public void run() {
+        while(true) {
+           try {
+              sleep(delay);
+           } catch( InterruptedException e) { }
+           pool.reapConnections();
+        }
+    }
+}

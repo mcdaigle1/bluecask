@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<!-- Utilities build file -->
+
+<project name="Utilities" default="jar" basedir=".">
+
+<property name="util.root" value="/www/utilities"/>
+
+<property name="build.compiler" value="modern"/>
+
+<property name="libdir" value="/www/library"/>
+
+<property name="javadir" value="/usr/local/java"/>
+
+<property name="build" value="${util.root}/build"/>
+
+<property name="build.classesdir" value="${build}/classes"/>
+
+<property name="build.jarfile" value="bcsutils.jar"/>
+
+<!-- ========================================================================= -->
+<!-- Project classpath                                                         -->
+<!-- ========================================================================= -->
+<path id="project.class.path">
+  <fileset dir="${libdir}">
+    <include name="*.jar"/>
+    <include name="*.zip"/>
+  </fileset>
+  <fileset dir="${javadir}/jre/lib">
+    <include name="*.jar"/>
+    <include name="*.zip"/>
+  </fileset>
+</path>
+    
+<!-- ========================================================================= -->
+<!-- Compile the project                                                       -->
+<!-- ========================================================================= -->
+<target name="compile">
+  <mkdir dir="${build}"/>
+  <mkdir dir="${build.classesdir}"/>
+  <javac srcdir="${util.root}"
+         destdir="${build.classesdir}"
+         debug="on">
+    <include name="**/*.java"/>
+    <classpath>
+      <path refid="project.class.path"/>
+    </classpath>
+  </javac>
+</target>
+
+<!-- ========================================================================= -->
+<!-- Clean the class files                                                     -->
+<!-- ========================================================================= -->
+<target name="clean">
+  <delete>
+    <fileset dir="${build.classesdir}">
+      <include name="**/*.class"/>
+      <exclude name="**/*.java"/>
+    </fileset>
+  </delete>
+</target>
+
+<!-- ========================================================================= -->
+<!-- Jar the project                                                           -->
+<!-- ========================================================================= -->
+<target name="jar" depends="compile">
+  <jar jarfile="${libdir}/${build.jarfile}"
+       includes="**/*.class"
+       basedir="${build.classesdir}"
+       compress="true"/>
+</target>
+
+</project>

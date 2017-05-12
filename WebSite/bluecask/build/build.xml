@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<!-- BlueCask build file -->
+
+<project name="BlueCask" default="dist" basedir=".">
+
+<property name="bcs.root" value="/www/bluecask"/>
+
+<property name="build.compiler" value="modern"/>
+
+<property name="libdir" value="/www/library"/>
+
+<property name="javadir" value="/usr/local/java"/>
+
+<property name="build" value="${bcs.root}/build"/>
+
+<property name="build.classesdir" value="${build}/classes"/>
+
+<property name="distdir" value="${bcs.root}/dist"/>
+
+<!-- ========================================================================= -->
+<!-- Project classpath                                                         -->
+<!-- ========================================================================= -->
+<path id="project.class.path">
+  <fileset dir="${libdir}">
+    <include name="*.jar"/>
+    <include name="*.zip"/>
+  </fileset>
+  <fileset dir="${javadir}/jre/lib">
+    <include name="*.jar"/>
+    <include name="*.zip"/>
+  </fileset>
+</path>
+    
+<!-- ========================================================================= -->
+<!-- Compile the project                                                       -->
+<!-- ========================================================================= -->
+<target name="compile">
+  <mkdir dir="${build}"/>
+  <mkdir dir="${build.classesdir}"/>
+  <javac srcdir="${bcs.root}"
+         destdir="${build.classesdir}"
+         debug="on">
+    <include name="**/*.java"/>
+    <classpath>
+      <path refid="project.class.path"/>
+    </classpath>
+  </javac>
+</target>
+
+<!-- ========================================================================= -->
+<!-- Clean the class files                                                     -->
+<!-- ========================================================================= -->
+<target name="clean">
+  <delete>
+    <fileset dir="${build.classesdir}">
+      <include name="**/*.class"/>
+      <exclude name="**/*.java"/>
+    </fileset>
+  </delete>
+</target>
+
+<!-- ========================================================================= -->
+<!-- Distribute the project                                                    -->
+<!-- ========================================================================= -->
+<target name="dist" depends="compile">
+  <mkdir dir="${distdir}"/>
+  <mkdir dir="${distdir}/WEB-INF"/>
+  <mkdir dir="${distdir}/WEB-INF/classes"/>
+  <mkdir dir="${distdir}/WEB-INF/lib"/>
+  <copy todir="${distdir}/WEB-INF/classes">
+    <fileset dir="${build.classesdir}" includes="**/*.class"/>
+  </copy>
+  <copy todir="${distdir}/WEB-INF/lib">
+    <fileset dir="${libdir}"/>
+  </copy>
+  <copy file="${bcs.root}/conf/web.xml" todir="${distdir}/WEB-INF"/>
+</target>
+
+</project>
